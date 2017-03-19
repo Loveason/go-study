@@ -1,0 +1,10 @@
+// storage
+package storage
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println("Hello World!")
+}
