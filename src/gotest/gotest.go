@@ -17,6 +17,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"time"
 )
@@ -191,6 +192,10 @@ func handleClient(conn net.Conn) {
 	log.Println("server: conn: closed")
 }
 
+func init() {
+	os.Exit(1)
+}
+
 func main() {
 	//	httpsTest1()
 	//	fmt.Println("ready.")
@@ -199,4 +204,11 @@ func main() {
 
 	curtime := time.Now().Unix()
 	fmt.Println("curtime:", curtime, "strconv.FormatInt", strconv.FormatInt(curtime, 10))
+
+	str := "11"
+	if matched, _ := regexp.MatchString(`^\d{2,4}$`, str); matched {
+		fmt.Println("匹配")
+	} else {
+		fmt.Println("不匹配")
+	}
 }
