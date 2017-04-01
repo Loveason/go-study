@@ -18,7 +18,7 @@ const (
 var po = make(map[string]int)
 
 func parseExp(s string) (exps []string, err error) {
-	re, err := regexp.Compile("[0-9]+|[+*/\\-\\(\\)]{1}")
+	re, err := regexp.Compile(`[0-9]+|[+*/\-\(\)]{1}`)
 	if err != nil {
 		fmt.Println("regexp compile error:", err)
 		return
@@ -76,7 +76,7 @@ func isPop(list *list.List, s string) (op []string, ok bool) {
 }
 
 func isOperate(s string) bool {
-	re, _ := regexp.Compile("[+*/\\-\\(\\)]{1}")
+	re, _ := regexp.Compile(`[+*/\-\(\)]{1}`)
 	ok := re.MatchString(s)
 	// fmt.Println(ok, s)
 	return ok
@@ -115,16 +115,18 @@ func pre2stuf(exps []string) (exps2 []string) {
 	return
 }
 
-func caculate(exps []string) int {
+func caculate(exps []string) float64 {
 	list1 := list.New()
 
 	for _, s := range exps {
 		if isOperate(s) {
 			back := list1.Back()
 			prev := back.Prev()
-			backVal, _ := back.Value.(int)
-			prevVal, _ := prev.Value.(int)
-			var res int
+
+			backVal, _ := strconv.ParseFloat(fmt.Sprintf("%v", back.Value), 64)
+			prevVal, _ := strconv.ParseFloat(fmt.Sprintf("%v", prev.Value), 64)
+
+			var res float64
 			switch s {
 			case "+":
 				res = prevVal + backVal
@@ -139,7 +141,8 @@ func caculate(exps []string) int {
 			list1.Remove(prev)
 			list1.PushBack(res)
 		} else {
-			v, _ := strconv.Atoi(s)
+			v, _ := strconv.ParseFloat(s, 64)
+			//strconv.Atoi(s)
 			list1.PushBack(v)
 		}
 	}
@@ -147,7 +150,8 @@ func caculate(exps []string) int {
 		fmt.Println("caculate error")
 		os.Exit(1)
 	}
-	res, _ := list1.Back().Value.(int)
+
+	res, _ := strconv.ParseFloat(fmt.Sprintf("%v", list1.Back().Value), 64)
 	return res
 }
 
@@ -160,6 +164,10 @@ func main() {
 	a = "(1/2+2*3+1)/2+2*3"
 	exps, _ := parseExp(a)
 	fmt.Println(exps)
+
+	exps2 := pre2stuf(exps)
+	fmt.Println(exps2)
+	fmt.Println(caculate(exps2))
 	// a := "1+23*1/123+(4 + 2 *5)"
 	//	fmt.Println("Please input express:")
 	//	var a string

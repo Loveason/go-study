@@ -2,6 +2,9 @@
 package main
 
 import (
+	"strconv"
+	//	"math"
+	//	"container/list"
 	"crypto/md5"
 	"crypto/rand"
 	"crypto/rsa"
@@ -17,8 +20,8 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"regexp"
-	"strconv"
+	//	"regexp"
+	//	"strconv"
 	"time"
 )
 
@@ -193,7 +196,7 @@ func handleClient(conn net.Conn) {
 }
 
 func init() {
-	os.Exit(1)
+	//	os.Exit(1)
 }
 
 func main() {
@@ -202,13 +205,64 @@ func main() {
 	//	time.Sleep(10 * time.Second)
 	//	fmt.Println("end.")
 
-	curtime := time.Now().Unix()
-	fmt.Println("curtime:", curtime, "strconv.FormatInt", strconv.FormatInt(curtime, 10))
+	//	curtime := time.Now().Unix()
+	//	fmt.Println("curtime:", curtime, "strconv.FormatInt", strconv.FormatInt(curtime, 10))
 
-	str := "11"
-	if matched, _ := regexp.MatchString(`^\d{2,4}$`, str); matched {
-		fmt.Println("匹配")
-	} else {
-		fmt.Println("不匹配")
-	}
+	//	str := "11"
+	//	if matched, _ := regexp.MatchString(`^\d{2,4}$`, str); matched {
+	//		fmt.Println("匹配")
+	//	} else {
+	//		fmt.Println("不匹配")
+	//	}
+
+	//	defer func() { //必须要先声明defer，否则不能捕获到panic异常
+	//		fmt.Println("c")
+	//		if err := recover(); err != nil {
+	//			fmt.Println(err) //这里的err其实就是panic传入的内容，55
+	//		}
+	//		fmt.Println("d")
+	//	}()
+	//	f()
+
+	//	l := list.New()
+
+	//	for i := 0; i < 5; i++ {
+	//		l.PushBack(i)
+	//	}
+
+	//	fmt.Println("back")
+	//	for e := l.Back(); e != nil; e = e.Prev() {
+	//		fmt.Println(e.Value)
+	//	}
+	v1 := 5.0
+	v2 := 2
+	strV1 := fmt.Sprintf("%v", v1)
+	strV2 := fmt.Sprintf("%v", v2)
+	fmt.Println("strV1", strV1, "strV2", strV2)
+	vv1, _ := strconv.ParseFloat(strV1, 64)
+	vv2, _ := strconv.ParseFloat(strV2, 64)
+	//string(v1)
+	vv3 := vv1 / vv2
+	fmt.Println(vv3)
+	//	var mytypeSlice []MyType
+
+	//	mytypeSlice = append(mytypeSlice, &MyType{"Test"})
+
+	//	fmt.Println(mytypeSlice)
+}
+
+type MyType struct {
+	A string
+}
+
+func f() {
+	fmt.Println("a")
+	f1()
+	fmt.Println("b")
+
+	fmt.Println("f")
+}
+
+func f1() {
+	panic(55)
 }

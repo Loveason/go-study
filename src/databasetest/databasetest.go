@@ -10,6 +10,31 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type MyModel struct {
+	Id   int
+	Name string
+}
+
+func main() {
+	mysqltest1()
+}
+
+func mysqltest1() {
+	db, err := sql.Open("mysql", "test:test@tcp(10.100.40.43:3306)/test?charset=utf8")
+	defer db.Close()
+	checkErr(err)
+	var m MyModel
+	mlist := make([]MyModel, 0)
+	rows := db.Query(`select * from mysql_test`)
+	for rows.Next() {
+		err = rows.Scans(&m.Id, &m.Name)
+		if err != nil {
+			fmt.Println("err:", err)
+		}
+		mlist = append(mlist, m)
+	}
+}
+
 func mysqltest() {
 	db, err := sql.Open("mysql", "root:root@/test?charset=utf8")
 	defer db.Close()
@@ -118,10 +143,6 @@ func sqlitetest() {
 	checkErr(err)
 
 	fmt.Println(affect)
-}
-
-func main() {
-	sqlitetest()
 }
 
 func checkErr(err error) {
